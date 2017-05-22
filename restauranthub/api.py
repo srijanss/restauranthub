@@ -1,3 +1,5 @@
+from django.contrib.auth.models import User
+from tastypie.authentication import BasicAuthentication, ApiKeyAuthentication
 from tastypie.resources import ModelResource
 from tastypie.constants import ALL
 from tastypie import fields
@@ -35,6 +37,8 @@ class RestaurantResource(ModelResource):
         queryset = Restaurant.objects.all()
         resource_name = 'restaurant'
         filtering = {'restaurant_name': ALL}
+        # authentication = BasicAuthentication()
+        authentication = ApiKeyAuthentication()
 
 class EventsResource(ModelResource):
     restaurant = fields.ForeignKey(RestaurantResource, 'restaurant')

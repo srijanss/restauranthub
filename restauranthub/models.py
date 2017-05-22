@@ -5,6 +5,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.utils import timezone
 
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 @python_2_unicode_compatible
@@ -87,4 +88,27 @@ class Offers(models.Model):
 
     def is_valid(self):
         return self.offer_valid_date > timezone.now()
+
+@python_2_unicode_compatible
+class RestaurantOwner(models.Model):
+    """
+    Restaurant Owner user
+    """
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    restaurant = models.ManyToManyField(Restaurant)
+
+    def __str__(self):
+        return self.username
+
+@python_2_unicode_compatible
+class Customer(models.Model):
+    """
+    Customer or Diner that is user that books table 
+    """
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    date_joined = models.DateField("joining date")
+    loyalty_points = models.IntegerField(default=0)
+
+    def __str__(self):
+        return "Customer Joined the Hub on " + str(self.date_joined)
 
